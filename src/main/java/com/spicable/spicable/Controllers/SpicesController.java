@@ -2,6 +2,7 @@ package com.spicable.spicable.Controllers;
 //controller file
 import com.spicable.spicable.Entity.Spices;
 import com.spicable.spicable.Repositories.SpicesRepository;
+import com.spicable.spicable.service.SpiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,65 +12,38 @@ import java.util.Optional;
 @RequestMapping("/spices")
 public class SpicesController {
 
-    @Autowired
-    private final SpicesRepository spicesRepository;
 
-    public SpicesController(final SpicesRepository spicesRepository) {
-        this.spicesRepository = spicesRepository;
+     final SpiceService spiceService;
+
+    public SpicesController(@Autowired SpiceService spiceService) {
+        this.spiceService = spiceService;
     }
 
     @GetMapping
     public Iterable<Spices> getSpices() {
-        return spicesRepository.findAll();
+        return spiceService.all();
     }
 
     @PostMapping
     public Spices addSpices(@RequestBody Spices spice) {
-        return spicesRepository.save(spice);
+        return spiceService.save(spice);
     }
 
     @PutMapping("/{id}")
 
-    public Spices updateSpice(@PathVariable("id") Integer id, @RequestBody Spices p
-    ) {
-        Optional<Spices> spicesToUpdateOptional = this.spicesRepository.findById(id);
-        if (!spicesToUpdateOptional.isPresent()) {
-            return null;
-        }
-        Spices spicesToUpdate = spicesToUpdateOptional.get();
-        if (p.getName() != null) {
-            spicesToUpdate.setName(p.getName());
-        }
-
-        if (p.getDescription() != null) {
-            spicesToUpdate.setDescription(p.getDescription());
-        }
-
-        if (p.getQuantity() != null) {
-            spicesToUpdate.setQuantity(p.getQuantity());
-        }
-
-        if (p.getPrice() != null) {
-            spicesToUpdate.setPrice(p.getPrice());
-        }
-        Spices updatedSpice = this.spicesRepository.save(spicesToUpdate);
-        return spicesToUpdate;
+    @PutMapping( "/{id}" )
+    public Spices update( @RequestBody, @PathVariable Integer id )
+    {
+        Spices spices = spiceService.findById( id );
+        spices.setName( spices.getName() );
+        spices.setDescription( spices.getDescription() );
+        return spiceService.save( spices );
     }
 
-    @DeleteMapping("/{id}")
-
-    public Spices deleteSpice(@PathVariable("id") Integer id) {
-        Optional<Spices> spicesToDeleteOptional = this.spicesRepository.findById(id);
-        if (!spicesToDeleteOptional.isPresent()) {
-            return null;
-        }
-
-        Spices spicesToDelete = spicesToDeleteOptional.get();
-        spicesRepository.delete(spicesToDelete);
-        return spicesToDelete;
+    @DeleteMapping( "/{id}" )
+    public void delete( @PathVariable Integer id )
+    {
+        spiceService.delete( id );
     }
-
-
-
 
 }
