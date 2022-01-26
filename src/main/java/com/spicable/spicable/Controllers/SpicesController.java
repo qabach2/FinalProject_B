@@ -29,10 +29,9 @@ public class SpicesController {
         return spiceService.save(spice);
     }
 
-    @PutMapping("/{id}")
 
     @PutMapping( "/{id}" )
-    public Spices update( @RequestBody, @PathVariable Integer id )
+    public Spices update(@RequestBody Spices spice, @PathVariable Integer id )
     {
         Spices spices = spiceService.findById( id );
         spices.setName( spices.getName() );

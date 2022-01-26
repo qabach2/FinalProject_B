@@ -10,6 +10,7 @@ public interface SpiceService {
     boolean delete(int spiceId);
 
     List<Spices> all();
+
     Spices findById (int spiceId);
 
     }
