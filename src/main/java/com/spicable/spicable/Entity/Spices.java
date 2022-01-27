@@ -1,5 +1,7 @@
 package com.spicable.spicable.Entity;
 
+import com.spicable.spicable.Controllers.dto.SpiceDto;
+
 import javax.persistence.*;
 //spicable entity
 @Entity
@@ -17,7 +19,14 @@ public class Spices {
     @Column(name="PRICE")
     private Double price;
 
-    public Spices(){
+    public Spices() {
+    }
+
+    public Spices(SpiceDto spiceDto){
+        this.name = spiceDto.getName();
+        this.description = spiceDto.getDescription();
+        this.quantity = spiceDto.getQuantity();
+        this.price= spiceDto.getPrice();
 
     }
     public Spices(String name, String description, Integer quantity, Double price) {
@@ -65,5 +74,16 @@ public class Spices {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Spices{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
     }
 }
